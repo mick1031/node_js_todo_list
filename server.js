@@ -57,7 +57,7 @@ const requestListener = (req, res) => {
         res.end();
     } else if (req.url.startsWith('/todos/') && req.method == 'DELETE') {
         const id = req.url.split('/').pop();
-        const index = todos.findIndex((element) => { element.id == id });
+        const index = todos.findIndex((element) => (element.id == id));
         if (index !== -1) {
             todos.splice(index, 1);
             res.writeHead(200, headers);
@@ -65,6 +65,7 @@ const requestListener = (req, res) => {
                 "status": "success",
                 "data": todos,
             }));
+            res.end();
         } else {
             errorHandle(res);
         }
@@ -73,10 +74,11 @@ const requestListener = (req, res) => {
             try {
                 const title = JSON.parse(body).title;
                 const id = req.url.split('/').pop();
-                const index = todos.findIndex((element) => { element.id == id });
+
+                const index = todos.findIndex((element) => (element.id === id));
 
                 if (index !== -1 && title !== undefined) {
-                    todo[index].title = title;
+                    todos[index].title = title;
                     res.writeHead(200, headers);
                     res.write(JSON.stringify({
                         "status": "success",
